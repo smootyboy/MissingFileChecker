@@ -41,12 +41,22 @@ find "$1" -type f | cut -d/ -f1- | sort > "$tmp"
 while read file_path; do 
 	echo "$file_path"
 	file_name=${file_path##*/}
-	file_count=$(find "$destinationDir" -name $file_name | wc -l)
+	found=false
 
-	if [[ $file_count -lt 1 ]]; then
-		#file_path="$originalDir$file_name"
-		rsync -azr "$file_path" "$missingDir"
+	while read line; do
+		#check hash
+    	echo "Processing file $line against $file_path"
+    	found=true
+	done < <(find "$destinationDir" -name $file_name)
+
+	echo "$found"
+	if [ $found == true ] ; then
+		echo "$found"
+		continue
 	fi
+
+	rsync -azr "$file_path" "$missingDir"
+
 done < "$tmp"
 
 echo "Finished"
