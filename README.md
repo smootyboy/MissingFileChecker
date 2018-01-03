@@ -14,4 +14,4 @@ tmp: a file name used to store a list of all filenames in the original directory
 
 ## Mac users
 
-Mac does not come with md5sum but has an similar tool build in md5. By adding ```alias md5sum='md5 -r'``` to your ~/.bashrc  or install md5sum with homebrew ```brew install md5sha1sum``` this script will work.
+Mac does not come with md5sum but has an similar tool build in md5. By adding ```alias md5sum='md5 -r'``` to your ~/.bashrc  or installing md5sum with homebrew ```brew install md5sha1sum``` this script will work.
