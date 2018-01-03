@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "$#" -ne 4 ]] ; then
-	echo "Usage: ./missingScript originalDir destinationDir missingDir tmp"
+	echo "Usage: ./missingScript.sh originalDir destinationDir missingDir tmp"
 	exit 1
 fi
 
