@@ -44,14 +44,15 @@ while read file_path; do
 	found=false
 
 	while read line; do
-		#check hash
-    	echo "Processing file $line against $file_path"
-    	found=true
+
+    	echo "Checking hash of $line against $file_path"
+
+    	if [ "$(md5 -q "$line")" = "$(md5 -q "$file_path")" ]; then
+			found=true
+		fi
 	done < <(find "$destinationDir" -name $file_name)
 
-	echo "$found"
 	if [ $found == true ] ; then
-		echo "$found"
 		continue
 	fi
 
