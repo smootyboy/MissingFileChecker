@@ -1,13 +1,22 @@
 #!/bin/bash
 
-#find /Volumes/CANON_DC/DCIM/100CANON/ -type f -exec basename {} \; | cut -d/ -f2- | sort > ~/file_list.txt
+originalDir=$1 
+echo "$1"
+destinationDir=$2
+echo "$2"
+missingDir=$3
+echo "$3"
+tmp=$4
+echo "$4"
 
-directory_path="/Volumes/Seagate Exp/foto archief/"
+find "$1" -type f -exec basename {} \; | cut -d/ -f2- | sort > "$tmp"
+
+#directory_path="/Volumes/Seagate Exp/foto archief/"
 while read file_name; do 
-	file_count=$(find "$directory_path" -name $file_name | wc -l)
+	file_count=$(find "$destinationDir" -name $file_name | wc -l)
 
 	if [[ $file_count -lt 1 ]]; then
-		file_path="/Volumes/CANON_DC/DCIM/100CANON/$file_name"
-		rsync -azr "$file_path" "/Volumes/Seagate Exp/missing/"
+		file_path="$originalDir$file_name"
+		rsync -azr "$file_path" "$missingDir"
 	fi
-done < file_list.txt
+done < "$tmp"
