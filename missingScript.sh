@@ -39,15 +39,14 @@ fi
 find "$1" -type f | cut -d/ -f1- | sort > "$tmp"
 
 while read file_path; do 
-	echo "$file_path"
 	file_name=${file_path##*/}
 	found=false
 
 	while read line; do
 
-    	echo "Checking hash of $line against $file_path"
+    	#echo "Checking hash of $line against $file_path"
 
-    	if [ "$(md5 -q "$line")" = "$(md5 -q "$file_path")" ]; then
+    	if [ "$(md5sum "$line" | cut -d ' ' -f 1)" = "$(md5sum "$file_path" | cut -d ' ' -f 1)" ]; then
 			found=true
 		fi
 	done < <(find "$destinationDir" -name $file_name)
