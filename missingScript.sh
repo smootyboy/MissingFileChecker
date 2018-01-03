@@ -23,7 +23,7 @@ if [ ! -d "$missingDir" ]; then
 	echo "creating missingDir"
 	mkdir "$missingDir"
 fi
-if [ -e "$file" ]; then
+if [ -e "$tmp" ]; then
     echo "$tmp already exists"
     read -p "Do you wish to overwrite? " -n 1 -r
 	echo    
@@ -36,14 +36,17 @@ if [ -e "$file" ]; then
 fi
 
 
-find "$1" -type f -exec basename {} \; | cut -d/ -f2- | sort > "$tmp"
+find "$1" -type f | cut -d/ -f1- | sort > "$tmp"
 
-#directory_path="/Volumes/Seagate Exp/foto archief/"
-while read file_name; do 
+while read file_path; do 
+	echo "$file_path"
+	file_name=${file_path##*/}
 	file_count=$(find "$destinationDir" -name $file_name | wc -l)
 
 	if [[ $file_count -lt 1 ]]; then
-		file_path="$originalDir$file_name"
+		#file_path="$originalDir$file_name"
 		rsync -azr "$file_path" "$missingDir"
 	fi
 done < "$tmp"
+
+echo "Finished"
