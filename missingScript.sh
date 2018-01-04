@@ -1,14 +1,13 @@
 #!/bin/bash
 
-if [[ "$#" -ne 4 ]] ; then
-	echo "Usage: ./missingScript.sh originalDir destinationDir missingDir tmp"
+if [[ "$#" -ne 3 ]] ; then
+	echo "Usage: ./missingScript.sh originalDir destinationDir missingDir"
 	exit 1
 fi
 
 originalDir=$1 
 destinationDir=$2
 missingDir=$3
-tmp=$4
 
 if [ ! -d "$originalDir" ]; then
 	echo "originalDir (arg 1) is not an existing directory"
@@ -23,20 +22,6 @@ if [ ! -d "$missingDir" ]; then
 	echo "creating missingDir"
 	mkdir "$missingDir"
 fi
-if [ -e "$tmp" ]; then
-    echo "$tmp already exists"
-    read -p "Do you wish to overwrite? " -n 1 -r
-	echo    
-	if [[ $REPLY =~ ^[Yy]$ ]]
-	then
-    	echo "Continuing program"
-	else
-		exit 1
-	fi
-fi
-
-
-find "$1" -type f | cut -d/ -f1- | sort > "$tmp"
 
 while read file_path; do 
 	file_name=${file_path##*/}
@@ -57,6 +42,6 @@ while read file_path; do
 
 	rsync -azr "$file_path" "$missingDir"
 
-done < "$tmp"
+done < <(find "$1" -type f | cut -d/ -f1- | sort)
 
 echo "Finished"
